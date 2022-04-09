@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -69,6 +70,23 @@ public class GreetingsController {
     	return new ResponseEntity<Users>(users, HttpStatus.CREATED);
     }
     
+    @PutMapping(value = "update") /*Mapeia a url*/
+    @ResponseBody /*Descrição da resposta*/
+    public ResponseEntity<?> update (@RequestBody Users user){ /*Recebe os dados para salvar, injetando na classe*/
+    	
+    	/*O tipo genérico é essencial, pois na operação de atualizar é necessário
+    	 * que o valor do campo id exista, isto é tenha valor diferente de nulo.*/
+    	
+    	if(user.getId() == null) {
+    		return new ResponseEntity<String>("Id não foi informado", HttpStatus.OK);
+    	}
+    	
+    	
+    	Users users = userRepository.saveAndFlush(user); // Salva e roda direto no banco de dados, sem precisar finalizar a requisição.
+    	
+    	return new ResponseEntity<Users>(users, HttpStatus.OK);
+    }
+    
     @DeleteMapping(value = "delete") /*Mapeia a url*/
     @ResponseBody /*Descrição da resposta*/
     public ResponseEntity<String> delete (@RequestParam Long iduser){ /*Recebe os dados para salvar, injetando na classe*/
@@ -78,6 +96,17 @@ public class GreetingsController {
     	userRepository.deleteById(iduser);
     	
     	return new ResponseEntity<String>("User deleted with sucess", HttpStatus.OK); /*Somente mostrará que a requisição de deletar foi realizada com sucesso.*/
+    }
+    
+    @GetMapping(value = "findById") /*Mapeia a url*/
+    @ResponseBody /*Descrição da resposta*/
+    public ResponseEntity<Users> findId (@RequestParam(name = "iduser") Long iduser){ /*Recebe os dados para salvar, injetando na classe*/
+    	
+    	/*É somente necessário do parâmetro id para deletar um usuário.*/
+    	
+    	Users user = userRepository.findById(iduser).get();
+    	
+    	return new ResponseEntity<Users>(user, HttpStatus.OK); /*Somente mostrará que a requisição de deletar foi realizada com sucesso.*/
     }
     
 }
