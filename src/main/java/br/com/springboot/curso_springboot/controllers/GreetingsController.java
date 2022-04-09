@@ -5,10 +5,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -54,6 +58,26 @@ public class GreetingsController {
     	return new ResponseEntity<List<Users>>(users, HttpStatus.OK); /*Retorna a lista em JSON, o status
     	serve para indicar que deu tudo certo.*/
     	
+    }
+    
+    @PostMapping(value = "save") /*Mapeia a url*/
+    @ResponseBody /*Descrição da resposta*/
+    public ResponseEntity<Users> save (@RequestBody Users user){ /*Recebe os dados para salvar, injetando na classe*/
+    	
+    	Users users = userRepository.save(user);
+    	
+    	return new ResponseEntity<Users>(users, HttpStatus.CREATED);
+    }
+    
+    @DeleteMapping(value = "delete") /*Mapeia a url*/
+    @ResponseBody /*Descrição da resposta*/
+    public ResponseEntity<String> delete (@RequestParam Long iduser){ /*Recebe os dados para salvar, injetando na classe*/
+    	
+    	/*É somente necessário do parâmetro id para deletar um usuário.*/
+    	
+    	userRepository.deleteById(iduser);
+    	
+    	return new ResponseEntity<String>("User deleted with sucess", HttpStatus.OK); /*Somente mostrará que a requisição de deletar foi realizada com sucesso.*/
     }
     
 }
