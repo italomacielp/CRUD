@@ -109,4 +109,16 @@ public class GreetingsController {
     	return new ResponseEntity<Users>(user, HttpStatus.OK); /*Somente mostrará que a requisição de deletar foi realizada com sucesso.*/
     }
     
+    @GetMapping(value = "findByName") /*Mapeia a url*/
+    @ResponseBody /*Descrição da resposta*/
+    public ResponseEntity<List<Users>> findByName (@RequestParam(name = "name") String name){ /*Recebe os dados para salvar, injetando na classe*/
+    	
+    	/*É somente necessário do parâmetro id para deletar um usuário.*/
+    	
+    	List<Users> users = userRepository.findByName(name.trim().toUpperCase()); //O trim retira o espaço.
+    	
+    	return new ResponseEntity<List<Users>>(users, HttpStatus.OK); /*Somente mostrará que a requisição de deletar foi realizada com sucesso.*/
+    }
+    
+    
 }
