@@ -11,10 +11,20 @@
 	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
 	crossorigin="anonymous">
 
+<style type="text/css">
+	html {
+		margin-left: 5%;
+		margin-right: 5%;
+		margin-top: 5%;
+	}
+
+
+</style>
+
 </head>
 <body>
 
-	<h3>Spring Boot</h3>
+	<center><h3>Formulário de Cadastro - Spring Boot REST API CRUD Completo</h3></center>
 	
 	<form action="" id="formCadastroUser">
 		<div class="mb-3">
@@ -59,6 +69,7 @@
 						</div>
 							<button type="button" class="btn btn-success" onclick="pesquisarUser()">Search</button>
 					</form>
+						<div style="height: 300px; overflow: scroll;"> <!-- Evita quebra de página  -->
 					<table class="table" id="tabelaresultados">
 						<thead>
 							<tr>
@@ -71,6 +82,7 @@
 						<tbody>
 						</tbody>
 					</table>
+						</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
@@ -95,9 +107,12 @@
 	
 		function botaoDeletarDaTela(){
 			var id = $('#id').val();
-			deleteUser(id);
 			
-			document.getElementById('formCadastroUser').reset();
+			if(id != null && id.trim() != ''){ 
+				deleteUser(id); // Evita exceção de id nulo.
+			
+				document.getElementById('formCadastroUser').reset();
+			}
 		}
 	
 		function deleteUser(id){
@@ -170,6 +185,20 @@
 			var id = $("#id").val(); //val sem parâmetro retorna o valor escrito na tela.
 			var name = $("#name").val();
 			var age = $("#age").val();
+			
+			//Validação para nome e idade
+			
+			if(name != null || name != null && name.trim() != ''){
+				$('#name').focus();
+				alert("Inform the date");
+				return;
+			}
+			
+			if(age != null || age != null && age.trim() != ''){
+				$('#age').focus();
+				alert("Inform the age");
+				return;
+			}
 			
 			$.ajax({
 				method: "POST",
