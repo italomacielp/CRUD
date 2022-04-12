@@ -188,14 +188,13 @@
 			
 			//Validação para nome e idade
 			
-			if(name != null || name != null && name.trim() != ''){
+			if(name == null || name != null && name.trim() == ''){
 				$('#name').focus();
 				alert("Inform the date");
 				return;
 			}
 			
-			if(age != null || age != null && age.trim() != ''){
-				$('#age').focus();
+			if(age == null || age != null && age.trim() == ''){
 				alert("Inform the age");
 				return;
 			}
